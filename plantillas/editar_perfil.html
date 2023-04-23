@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %} Editar perfil {% endblock %}
+
+{% block content %} 
+<body>
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">¿Cambiaron algunas cosas?</h1>
+    <h2 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">No hay problema, edita tu perfil:</h2>
+    <form action="" method="POST" style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white">{% csrf_token %}
+        <table>
+        
+          {{miFormulario.as_table}}
+        
+        </table>
+        
+        
+        
+        <input type="submit", value="Enviar">
+        
+    </form>
+</body>
+{% endblock %}

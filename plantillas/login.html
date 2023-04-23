@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %} Iniciar sesión {% endblock %}
+
+{% block content %} 
+<body>
+
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Bienvenido de vuelta!</h1>
+    <form action="{% url 'login' %}" method="POST" style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white"> {% csrf_token %}
+        <table>       
+            {{ form.as_table }}
+        </table> 
+        <input type="submit" value="Iniciar sesion">
+        
+
+    </form>
+    <p>
+
+        <button onclick="location.href='registro'" style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:black; text-align: center; font-size:medium;">Registrarse</button>
+    </p>
+</body>
+{% endblock %}
