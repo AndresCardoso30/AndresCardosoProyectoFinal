@@ -93,3 +93,44 @@ def mostrar_perfiles(request):
     users = User.objects.all()
 
     return render(request, "mostrar_perfiles.html", {"users":users})
+
+
+@login_required
+def chatear(request, id):
+    emisor = request.user
+    receptor = User.objects.get(id=id)
+    chats = Mensaje.objects.filter(clave1__icontains=emisor.id).filter(clave2__icontains=receptor.id)
+    chats_receptor = Mensaje.objects.filter(clave1__icontains=receptor.id).filter(clave2__icontains=emisor.id)
+
+    resultado = sorted(chain(chats, chats_receptor), key=attrgetter('tiempo'))
+
+    clave1=emisor.id
+    clave2=receptor.id   
+
+    if chats:
+        mensaje=f"Chats con {receptor.username}"
+    else:
+        mensaje="No hay chats"
+
+    if request.method == "POST":
+        
+        miFormulario = MensajeForm(request.POST, initial={'emisor':emisor, 'receptor':receptor, 'clave1':clave1, 'clave2':clave2})
+
+        if miFormulario.is_valid():
+            informacion = miFormulario.cleaned_data
+            chat=Mensaje(emisor=informacion['emisor'], receptor=informacion['receptor'], mensaje=informacion['mensaje'], clave1=informacion['clave1'], clave2=informacion['clave2'])
+            chat.save()
+            chats = Mensaje.objects.filter(clave1__icontains=emisor.id).filter(clave2__icontains=receptor.id)
+            chats_receptor = Mensaje.objects.filter(clave1__icontains=receptor.id).filter(clave2__icontains=emisor.id)
+            resultado = sorted(chain(chats, chats_receptor), key=attrgetter('tiempo'))
+            
+            
+            
+
+            return render(request, "chat.html", {"miFormulario":miFormulario, "chats":resultado, "mensaje":mensaje})
+        
+    mensaje2= "Algo anda mal..."
+
+    miFormulario = MensajeForm(initial={'emisor':emisor, 'receptor':receptor, 'clave1':clave1, 'clave2':clave2})
+
+    return render(request, "chat.html", {"miFormulario":miFormulario, "mensaje":mensaje, "mensaje2":mensaje2, "chats":resultado})

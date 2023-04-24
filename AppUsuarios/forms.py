@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from AppUsuarios.models import *
+ 
+
 
 class RegistroUsuarioForm(UserCreationForm):
     email=forms.EmailField(label="Email usuario")
@@ -28,5 +31,6 @@ class MensajeForm(forms.Form):
     emisor = forms.CharField(max_length=30)
     receptor = forms.CharField(max_length=30)
     mensaje = forms.CharField(label="Mensaje", max_length=200)
-    clave1=forms.CharField(max_length=100)
-    clave2=forms.CharField(max_length=100)
+    clave1=forms.CharField(max_length=100, widget=forms.HiddenInput)
+    clave2=forms.CharField(max_length=100, widget=forms.HiddenInput)
+
