@@ -35,6 +35,9 @@ class MensajeForm(forms.Form):
     clave1=forms.CharField(max_length=100, widget=forms.HiddenInput)
     clave2=forms.CharField(max_length=100, widget=forms.HiddenInput)
 
+    class Meta:
+        model=Mensaje
+
 class AvatarFormulario(forms.Form):
     imagen=forms.ImageField(label='Imagen')
 
@@ -43,4 +46,9 @@ class PerfilForm(forms.Form):
     nombre=forms.CharField(max_length=30)
     apellido=forms.CharField(max_length=30)
     biografia=forms.CharField(max_length=1500)
-    imagen=forms.ImageField(label='Imagen de perfil')
+    imagen=forms.ImageField(label='Imagen de perfil', required=False)
+
+    class Meta:
+        model=Perfil
+
+

@@ -16,7 +16,7 @@ def agregarDestino(request):
             
             pagina.save()
             
-            return render(request, 'pagina_individual.html', {"mensaje": "Pagina creada correctamente", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+            return render(request, 'pagina_individual.html', {"mensaje": "Pagina creada correctamente", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'pagina':pagina})
         
     else: 
 

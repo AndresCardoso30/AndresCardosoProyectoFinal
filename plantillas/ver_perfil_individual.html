@@ -5,11 +5,14 @@
 {% block content %} 
 <body>
     <p>{{ mensaje }}</p>
-    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Perfil de {{perfil.user.username}}</h1>
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Perfil de {{user.username}}</h1>
     
-    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">{{perfil.nombre}} {{perfil.apellido}}</h1>
-    <h2 style="color: grey; font-size: medium; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{perfil.biografia}}</h2>
-    <img src="{{perfil.imagen.url}}" style="width: 1000px; height: 500px;" >
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">{{user.perfil.nombre}} {{user.perfil.apellido}}</h1>
+    <h2 style="color: grey; font-size: medium; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{user.perfil.biografia}}</h2>
+    <p><img src="{{user.perfil.imagen.url}}" style="width: 1000px; height: 500px;" ></p>
+    {% if request.user == user%}
+    <p><a href="{% url 'editar_mi_perfil' %}" style="color: rgba(255, 255, 255, 0.8); margin-left: 90%;">Editar mi Perfil</a></p>
+    {% endif %}
     
 
 

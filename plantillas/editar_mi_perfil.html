@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %} Editar Perfil {% endblock %}
+
+{% block content %} 
+<body>
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center; font-size: larger;">Edita tu perfil: </h1>
+    
+    <form action="" method="POST" style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white" enctype="multipart/form-data">{% csrf_token %}
+      <table>
+        
+        {{form.as_p}}
+        
+      </table>
+        
+      <input type="submit", value="Actualizar">
+        
+    </form>
+    
+    
+    <p>{{mensaje}}</p>
+</body>
+{% endblock %}

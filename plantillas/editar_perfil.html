@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %} Editar perfil {% endblock %}
+{% block title %} Editar Usuario {% endblock %}
 
 {% block content %} 
 <body>
-    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">¿Cambiaron algunas cosas?</h1>
-    <h2 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">No hay problema, edita tu perfil:</h2>
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center; font-size: larger;">¿Cambiaron algunas cosas?</h1>
+    <h2 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center; font-size: large;">No hay problema, edita tu usuario:</h2>
     <form action="" method="POST" style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white">{% csrf_token %}
       <table>
         
@@ -17,7 +17,11 @@
         
     </form>
     <a href="{% url 'agregarAvatar' %}" style="color: rgba(255, 255, 255, 0.8);">Agregar Avatar</a>
+    {% if user.perfil.nombre %}
+    <a href="{% url 'editar_mi_perfil' %}" style="color: rgba(255, 255, 255, 0.8);">Editar mi Perfil</a>
+    {% else %}
     <a href="{% url 'agregar_perfil' %}" style="color: rgba(255, 255, 255, 0.8);">Agregar Perfil</a>
+    {% endif %}
     
     <p>{{mensaje}}</p>
 </body>

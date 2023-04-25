@@ -69,6 +69,7 @@ def login_request(request):
 def editarPerfil(request):
 
     usuario = request.user
+    perfil = Perfil.objects.all()
 
     if request.method == 'POST':
         miFormulario = UserEditForm(request.POST)
@@ -84,7 +85,7 @@ def editarPerfil(request):
             usuario.save()
             mensaje = "Usuario actualizado de forma correcta."
 
-            return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+            return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'user':usuario, 'perfil':perfil})
     
     else:
 
@@ -203,10 +204,83 @@ def agregarPerfil(request):
     else:
         form = PerfilForm()
         return render(request, 'agregar_perfil.html', {'form':form, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
-    
+
+@login_required    
 def verPerfil(request, id):
-   perfil = Perfil.objects.get(id=id)
+   u = User.objects.get(id=id)
+   perfil = Perfil.objects.all()
+   
    if perfil:
-       return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'perfil':perfil}) 
+       return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'user':u, 'perfil':perfil}) 
    else:
        return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'mensaje':'Usuario no cuenta aun con un perfil.'})
+
+@login_required   
+def verMiPerfil(request):
+    u = User.objects.get(username=request.user)
+    perfil = Perfil.objects.all()
+    return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'user':u, 'perfil':perfil})
+
+@login_required
+def eeditar_mi_perfil(request):
+
+    usuario = request.user
+    perfil = Perfil.objects.all()
+
+    if request.method == 'POST':
+        form = PerfilForm(request.POST)
+
+        if form.is_valid():
+            u = User.objects.get(username=request.user)
+
+           
+            imagen=form.cleaned_data['imagen']
+            if imagen:
+                perfil_u = Perfil (user=u, nombre=form.cleaned_data['nombre'], apellido=form.cleaned_data['apellido'], biografia=form.cleaned_data['biografia'], imagen=form.cleaned_data['imagen'])
+            else:
+                perfil_u = Perfil (user=u, nombre=form.cleaned_data['nombre'], apellido=form.cleaned_data['apellido'], biografia=form.cleaned_data['biografia'])
+            perfil_u.save()
+            mensaje = 'Perfil actualizado correctamente'
+
+            return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje, 'footer':obtenerFooter(request), 'perfil':perfil_u})
+
+        else: 
+            return render(request, 'editar_mi_perfil.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    
+    else:
+
+        form = PerfilForm(initial={'nombre':usuario.perfil.nombre, 'apellido':usuario.perfil.apellido, 'biografia':usuario.perfil.biografia, 'imagen':usuario.perfil.imagen})
+    
+    return render(request, 'editar_mi_perfil.html', {"form":form, "usuario":usuario, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+
+def editar_mi_perfil(request):
+
+    usuario = request.user
+    perfil = usuario.perfil
+
+    if request.method == 'POST':
+        form = PerfilForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            perfil.nombre = form.cleaned_data['nombre']
+            perfil.apellido = form.cleaned_data['apellido']
+            perfil.biografia = form.cleaned_data['biografia']
+            
+            imagen = form.cleaned_data.get('imagen')
+            if imagen:
+                perfil.imagen = imagen
+
+            perfil.save()
+
+            mensaje = 'Perfil actualizado correctamente'
+
+            return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje, 'footer':obtenerFooter(request), 'perfil':perfil})
+
+        else: 
+            return render(request, 'editar_mi_perfil.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    
+    else:
+        form = PerfilForm(initial={'nombre':perfil.nombre, 'apellido':perfil.apellido, 'biografia':perfil.biografia})
+    
+    return render(request, 'editar_mi_perfil.html', {"form":form, "usuario":usuario, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})

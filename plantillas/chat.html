@@ -9,7 +9,7 @@
 
         {% for chat in chats %}
             <li style="list-style-type: none">
-                {% if chat.emisor == emisor.username %}
+                {% if chat.emisor == request.user.username %}
                     <h4 style="font-family: Verdana, Geneva, Tahoma, sans-serif;  width: auto; text-transform: uppercase; font-size: large; text-align: right;">{{chat.emisor}}</h4>
                     <h4 style="color: black; font-size: medium; text-align: right;">{{chat.mensaje}}</h4>
                 {% else %}

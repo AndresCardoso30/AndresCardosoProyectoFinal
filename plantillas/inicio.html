@@ -9,5 +9,18 @@
     </header>
 
 <h2 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:white; text-align: center;">{{mensaje}}</h2>
+<p style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:white; text-align: justify; font-size: larger; margin-right: 25%; margin-left: 25%;">
+    Bienvenido/a a "¿Recorremos Uruguay?, una página pensada para fomentar el turismo en Uruguay a base de experiencias y testimonios de nuestros contribuyentes.
+    Observa los maravillosos destinos de nuestro país y elige tu próximo viaje. Y si quieres, ¡forma parte de nuestra comunidad registrándote!
+    
+</p>
+<p>
+    {% if user.is_authenticated %}
+    <p style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white; text-align: center; font-size:medium;">Ya estas contribuyendo, ¡Gracias {{request.user.username}}</p>
+    {% else %}
+    <a href="{% url 'registro' %}" style="color: rgba(255, 255, 255, 0.8); margin-left: 90%;">Registrarse</a>    
+    {% endif %}
+</p>
+
 </body>
 {% endblock %}
