@@ -9,6 +9,7 @@ class RegistroUsuarioForm(UserCreationForm):
     email=forms.EmailField(label="Email usuario")
     password1=forms.CharField(label="Contrasena", widget=forms.PasswordInput)
     password2=forms.CharField(label="Confirmar contrasena", widget=forms.PasswordInput)
+    
 
     class Meta:
         model=User
@@ -34,3 +35,5 @@ class MensajeForm(forms.Form):
     clave1=forms.CharField(max_length=100, widget=forms.HiddenInput)
     clave2=forms.CharField(max_length=100, widget=forms.HiddenInput)
 
+class AvatarFormulario(forms.Form):
+    imagen=forms.ImageField(label='Imagen')

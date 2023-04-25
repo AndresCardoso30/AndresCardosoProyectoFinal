@@ -23,13 +23,13 @@ def registro(request):
             #password2 = form.cleaned_data['password2']
             #email = form.cleaned_data['email']
             form.save()
-            return render(request, 'inicio.html', {"mensaje": "Usuario creado correctamente"})
+            return render(request, 'inicio.html', {"mensaje": "Usuario creado correctamente", 'avatar':obtenerAvatar(request)})
         
     else: 
 
         form = RegistroUsuarioForm()
 
-    return render (request, "registro_usuario.html", {"form": form})
+    return render (request, "registro_usuario.html", {"form": form, 'avatar':obtenerAvatar(request)})
 
 
 def login_request(request):
@@ -46,19 +46,19 @@ def login_request(request):
             if user is not None:
                 login(request, user)
 
-                return render(request, 'inicio.html', {"mensaje":f"Bienvenido {usuario}"})
+                return render(request, 'inicio.html', {"mensaje":f"Bienvenido {usuario}", 'avatar':obtenerAvatar(request)})
             
             else:
 
-                return render(request, 'login.html', {"mensaje":"Datos ingresados incorrectos"})
+                return render(request, 'login.html', {"mensaje":"Datos ingresados incorrectos", 'avatar':obtenerAvatar(request)})
             
         else:
 
-            return render(request, "login.html", {"mensaje": "Error, formulario erroneo", "form":form})
+            return render(request, "login.html", {"mensaje": "Error, formulario erroneo", "form":form, 'avatar':obtenerAvatar(request)})
         
     form = AuthenticationForm()
 
-    return render(request, "login.html", {"form":form})
+    return render(request, "login.html", {"form":form, 'avatar':obtenerAvatar(request)})
 
 
 @login_required
@@ -69,30 +69,36 @@ def editarPerfil(request):
     if request.method == 'POST':
         miFormulario = UserEditForm(request.POST)
 
-        if miFormulario.is_valid:
+        if miFormulario.is_valid():
 
             informacion = miFormulario.cleaned_data
-
+            
+            usuario.username = informacion['username']
             usuario.email = informacion['email']
             usuario.password1 = informacion['password1']
             usuario.password2 = informacion['password2']
             usuario.save()
+            mensaje = "Usuario actualizado de forma correcta."
 
-            return render(request, 'inicio.html')
+            return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request)})
     
     else:
 
         miFormulario = UserEditForm(initial={'email':usuario.email})
     
-    return render(request, 'editar_perfil.html', {"miFormulario":miFormulario, "usuario":usuario})
+    return render(request, 'editar_perfil.html', {"miFormulario":miFormulario, "usuario":usuario, 'avatar':obtenerAvatar(request)})
 
 
 @login_required
 def mostrar_perfiles(request):
     User = get_user_model()
     users = User.objects.all()
+   
+    
 
-    return render(request, "mostrar_perfiles.html", {"users":users})
+    return render(request, "mostrar_perfiles.html", {"users":users, 'avatar':obtenerAvatar(request)})
+
+
 
 
 @login_required
@@ -107,6 +113,7 @@ def chatear(request, id):
     clave1=emisor.id
     clave2=receptor.id   
 
+    
     if chats:
         mensaje=f"Chats con {receptor.username}"
     else:
@@ -127,10 +134,44 @@ def chatear(request, id):
             
             
 
-            return render(request, "chat.html", {"miFormulario":miFormulario, "chats":resultado, "mensaje":mensaje})
+            return render(request, "chat.html", {"miFormulario":miFormulario, "chats":resultado, "mensaje":mensaje, 'emisor':emisor, 'avatar':obtenerAvatar(request)})
         
     mensaje2= "Algo anda mal..."
 
     miFormulario = MensajeForm(initial={'emisor':emisor, 'receptor':receptor, 'clave1':clave1, 'clave2':clave2})
 
-    return render(request, "chat.html", {"miFormulario":miFormulario, "mensaje":mensaje, "mensaje2":mensaje2, "chats":resultado})
+    return render(request, "chat.html", {"miFormulario":miFormulario, "mensaje":mensaje, "mensaje2":mensaje2, "chats":resultado, 'emisor':emisor, 'avatar':obtenerAvatar(request)})
+
+def obtenerAvatar(request):
+    avatares=Avatar.objects.filter(user=request.user.id)
+
+    if len(avatares)!=0:
+        return avatares[0].imagen.url
+    else: 
+        return "/media/avatars/default.png"
+    
+
+
+@login_required
+def agregarAvatar(request):
+    if request.method == 'POST':
+
+        form = AvatarFormulario(request.POST, request.FILES)
+
+        if form.is_valid():
+            u = User.objects.get(username=request.user)
+
+            avatar = Avatar (user=u, imagen=form.cleaned_data['imagen'])
+            avatarViejo = Avatar.objects.filter(user=request.user)
+            if len(avatarViejo)>0:
+                avatarViejo[0].delete()
+            avatar.save()
+            mensaje = 'Avatar agregado correctamente'
+
+            return render(request, 'inicio.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje})
+
+        else: 
+            return render(request, 'agregarAvatar.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request)})
+    else:
+        form = AvatarFormulario()
+        return render(request, 'agregarAvatar.html', {'form':form, 'avatar':obtenerAvatar(request)})

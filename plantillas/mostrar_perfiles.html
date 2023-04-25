@@ -5,17 +5,29 @@
 {% block content %} 
 <body>
     <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Perfiles de nuestros contribuyentes</h1>
+    
     <ul>
 
-        {% for user in users %}
-            <li style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:whitesmoke; font-size: large;">
-                {{user.username}}
-                <a class="btn btn danger" href="{% url 'chat' user.id %}" style="color: rgba(255, 255, 255, 0.8);">Chatear</a> 
+        {% for userr in users %}
+
+            {% if userr.id != user.id %}
+                <li style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:whitesmoke; font-size: large; list-style:square;">
+                    
+                    {{userr.username}}     
+                    <a class="btn btn danger" href="{% url 'chat' userr.id %}" style="color: rgba(255, 255, 255, 0.8);">Chatear</a>
+                    
                 
 
-            </li>
+                </li>
+            {% endif %}
+            
             
         {% endfor %}
     </ul>
+
+    
+
+
+
 </body>
 {% endblock %}

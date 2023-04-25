@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %} Destinos {% endblock %}
+
+{% block content %} 
+<body>
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Destinos</h1>
+    <h3 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: left; font-size: medium;">{{mensaje}}</h3>
+    <a href="{% url 'agregarDestino' %}" style="color: rgba(255, 255, 255, 0.8);">Agregar Destino</a>
+    <ul>
+
+        {% if paginas %}
+            {% for pagina in paginas %}
+
+            
+                <li style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:whitesmoke; font-size: large; list-style:square;">
+                    
+                    <h2>{{pagina.titulo}}</h2>  
+                    <h3><img src="{{pagina.imagen.url}}" style="width: 100px; height: 50px;" >{{pagina.subtitulo}}</h3>   
+                    <a class="btn btn danger" href="{% url 'verPagina' pagina.id %}" style="color: rgba(255, 255, 255, 0.8);">Ver mas</a>
+                    
+                
+
+                </li>
+            
+            
+            
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    
+
+
+
+</body>
+{% endblock %}

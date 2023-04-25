@@ -70,10 +70,8 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
                     <!-- BOTONES DE LA BARRA PARA MODIFICAR -->
-                    {% if user.is_authenticated %}
-                    <p style="color:white; font-family: Verdana, Geneva, Tahoma, sans-serif;"> Bienvenido: {{user.username}}</p>
-                    {% endif %}
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Destinos</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'mostrarPaginas' %}">Destinos</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Acerca de mi</a></li>
                     {% if user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'perfiles' %}">Contribuyentes</a></li>
@@ -81,6 +79,11 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'logout' %}">Salir</a></li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'login' %}">Ingresar</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <p style="color:white; font-family: Verdana, Geneva, Tahoma, sans-serif;"><strong> Bienvenido/a: {{user.username}}</strong></p>
+                    <img src="{{ avatar }}" alt="Avatar" style="width: 50px; height: 50px;" />
+                    
                     {% endif %}
                 </ul>
             </div>

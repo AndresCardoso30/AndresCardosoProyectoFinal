@@ -4,28 +4,31 @@
 
 {% block content %} 
 <body>
-<h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif; color: bisque">{{mensaje}}</h1>
-<ul style="background-color: aliceblue;">
+<h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif; color: bisque; text-align: center; ">{{mensaje}}</h1>
+<ul style="background-color: bisque; opacity: 100%; margin-right: 400px; margin-left: 400px;width: 1000px; border-style:groove; border-color: black; border-radius: 10px;">
 
         {% for chat in chats %}
             <li style="list-style-type: none">
-                
-                    <h4 style="font-family: Verdana, Geneva, Tahoma, sans-serif; background-color: bisque; width: 100px; text-transform: uppercase; font-size: large; text-align: right;">{{chat.emisor}}</h4>
+                {% if chat.emisor == emisor.username %}
+                    <h4 style="font-family: Verdana, Geneva, Tahoma, sans-serif;  width: auto; text-transform: uppercase; font-size: large; text-align: right;">{{chat.emisor}}</h4>
+                    <h4 style="color: black; font-size: medium; text-align: right;">{{chat.mensaje}}</h4>
+                {% else %}
+                <h4 style="font-family: Verdana, Geneva, Tahoma, sans-serif;  width: auto; text-transform: uppercase; font-size: large; text-align: left;">{{chat.emisor}}</h4>
                     <h4 style="color: black; font-size: medium;">{{chat.mensaje}}</h4>
-                
+                {% endif %}
             </li>
             
         {% endfor %}
 </ul>
 <p>Enviar nuevo mensaje:</p>
-<form action="" method="POST" style="color:bisque"> {% csrf_token %}
-    <table>
+<form action="" method="POST" style="color:bisque;"> {% csrf_token %}
+    <table style="margin-right: 400px; margin-left: 400px;">
         {{miFormulario.as_table}}
 
 
     </table>
 
-    <input type="submit", value="Enviar",>
+    <input type="submit", value="Enviar", style="margin-right: 400px; margin-left: 400px;">
 
 
 
