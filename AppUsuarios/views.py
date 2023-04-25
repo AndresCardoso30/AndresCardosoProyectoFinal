@@ -10,6 +10,10 @@ from django.contrib.auth import get_user_model
 from itertools import chain
 from operator import attrgetter
 
+def obtenerFooter(request):
+    
+    return "/media/varios/abajo.png"
+
 def registro(request):
 
     if request.method == "POST":
@@ -23,13 +27,13 @@ def registro(request):
             #password2 = form.cleaned_data['password2']
             #email = form.cleaned_data['email']
             form.save()
-            return render(request, 'inicio.html', {"mensaje": "Usuario creado correctamente", 'avatar':obtenerAvatar(request)})
+            return render(request, 'inicio.html', {"mensaje": "Usuario creado correctamente", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
         
     else: 
 
         form = RegistroUsuarioForm()
 
-    return render (request, "registro_usuario.html", {"form": form, 'avatar':obtenerAvatar(request)})
+    return render (request, "registro_usuario.html", {"form": form, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 
 def login_request(request):
@@ -46,19 +50,19 @@ def login_request(request):
             if user is not None:
                 login(request, user)
 
-                return render(request, 'inicio.html', {"mensaje":f"Bienvenido {usuario}", 'avatar':obtenerAvatar(request)})
+                return render(request, 'inicio.html', {"mensaje":f"Bienvenido {usuario}", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
             
             else:
 
-                return render(request, 'login.html', {"mensaje":"Datos ingresados incorrectos", 'avatar':obtenerAvatar(request)})
+                return render(request, 'login.html', {"mensaje":"Datos ingresados incorrectos", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
             
         else:
 
-            return render(request, "login.html", {"mensaje": "Error, formulario erroneo", "form":form, 'avatar':obtenerAvatar(request)})
+            return render(request, "login.html", {"mensaje": "Error, formulario erroneo", "form":form, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
         
     form = AuthenticationForm()
 
-    return render(request, "login.html", {"form":form, 'avatar':obtenerAvatar(request)})
+    return render(request, "login.html", {"form":form, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 
 @login_required
@@ -80,13 +84,13 @@ def editarPerfil(request):
             usuario.save()
             mensaje = "Usuario actualizado de forma correcta."
 
-            return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request)})
+            return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
     
     else:
 
         miFormulario = UserEditForm(initial={'email':usuario.email})
     
-    return render(request, 'editar_perfil.html', {"miFormulario":miFormulario, "usuario":usuario, 'avatar':obtenerAvatar(request)})
+    return render(request, 'editar_perfil.html', {"miFormulario":miFormulario, "usuario":usuario, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 
 @login_required
@@ -96,7 +100,7 @@ def mostrar_perfiles(request):
    
     
 
-    return render(request, "mostrar_perfiles.html", {"users":users, 'avatar':obtenerAvatar(request)})
+    return render(request, "mostrar_perfiles.html", {"users":users, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 
 
@@ -134,13 +138,13 @@ def chatear(request, id):
             
             
 
-            return render(request, "chat.html", {"miFormulario":miFormulario, "chats":resultado, "mensaje":mensaje, 'emisor':emisor, 'avatar':obtenerAvatar(request)})
+            return render(request, "chat.html", {"miFormulario":miFormulario, "chats":resultado, "mensaje":mensaje, 'emisor':emisor, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
         
     mensaje2= "Algo anda mal..."
 
     miFormulario = MensajeForm(initial={'emisor':emisor, 'receptor':receptor, 'clave1':clave1, 'clave2':clave2})
 
-    return render(request, "chat.html", {"miFormulario":miFormulario, "mensaje":mensaje, "mensaje2":mensaje2, "chats":resultado, 'emisor':emisor, 'avatar':obtenerAvatar(request)})
+    return render(request, "chat.html", {"miFormulario":miFormulario, "mensaje":mensaje, "mensaje2":mensaje2, "chats":resultado, 'emisor':emisor, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 def obtenerAvatar(request):
     avatares=Avatar.objects.filter(user=request.user.id)
@@ -168,10 +172,41 @@ def agregarAvatar(request):
             avatar.save()
             mensaje = 'Avatar agregado correctamente'
 
-            return render(request, 'inicio.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje})
+            return render(request, 'inicio.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje, 'footer':obtenerFooter(request)})
 
         else: 
-            return render(request, 'agregarAvatar.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request)})
+            return render(request, 'agregarAvatar.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
     else:
         form = AvatarFormulario()
-        return render(request, 'agregarAvatar.html', {'form':form, 'avatar':obtenerAvatar(request)})
+        return render(request, 'agregarAvatar.html', {'form':form, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    
+
+
+@login_required
+def agregarPerfil(request):
+    if request.method == 'POST':
+
+        form = PerfilForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            u = User.objects.get(username=request.user)
+
+            perfil = Perfil (user=u, nombre=form.cleaned_data['nombre'], apellido=form.cleaned_data['apellido'], biografia=form.cleaned_data['biografia'], imagen=form.cleaned_data['imagen'])
+            
+            perfil.save()
+            mensaje = 'Perfil agregado correctamente'
+
+            return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje, 'footer':obtenerFooter(request), 'perfil':perfil})
+
+        else: 
+            return render(request, 'agregar_perfil.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    else:
+        form = PerfilForm()
+        return render(request, 'agregar_perfil.html', {'form':form, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    
+def verPerfil(request, id):
+   perfil = Perfil.objects.get(id=id)
+   if perfil:
+       return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'perfil':perfil}) 
+   else:
+       return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'mensaje':'Usuario no cuenta aun con un perfil.'})

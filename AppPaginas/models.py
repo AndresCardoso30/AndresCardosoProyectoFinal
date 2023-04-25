@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Pagina(models.Model):
     titulo=models.CharField(max_length=50)
-    subtitulo=models.CharField(max_length=50)
+    subtitulo=models.CharField(max_length=200)
     cuerpo=models.CharField(max_length=1500)
     autor=models.ForeignKey(User, on_delete=models.CASCADE)
     fecha=models.DateTimeField(auto_now_add=True)

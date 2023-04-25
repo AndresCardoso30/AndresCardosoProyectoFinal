@@ -13,7 +13,8 @@
             {% if userr.id != user.id %}
                 <li style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:whitesmoke; font-size: large; list-style:square;">
                     
-                    {{userr.username}}     
+                    {{userr.username}}    
+                    <a class="btn btn danger" href="{% url 'verPerfil' userr.id %}" style="color: rgba(255, 255, 255, 0.8);">Ver perfil</a> 
                     <a class="btn btn danger" href="{% url 'chat' userr.id %}" style="color: rgba(255, 255, 255, 0.8);">Chatear</a>
                     
                 

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %} Perfiles de contribuyentes {% endblock %}
+
+{% block content %} 
+<body>
+    <p>{{ mensaje }}</p>
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Perfil de {{perfil.user.username}}</h1>
+    
+    <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">{{perfil.nombre}} {{perfil.apellido}}</h1>
+    <h2 style="color: grey; font-size: medium; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{perfil.biografia}}</h2>
+    <img src="{{perfil.imagen.url}}" style="width: 1000px; height: 500px;" >
+    
+
+
+
+</body>
+{% endblock %}

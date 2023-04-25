@@ -22,5 +22,12 @@ class Avatar(models.Model):
 
     def __str__(self):
         return self.imagen
+    
+class Perfil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nombre=models.CharField(max_length=30)
+    apellido=models.CharField(max_length=30)
+    biografia=models.CharField(max_length=1500)
+    imagen=models.ImageField(upload_to='perfiles', null=True, blank=True)
 
 

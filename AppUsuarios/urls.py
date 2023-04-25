@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from AppUsuarios.views import agregarAvatar, chatear, editarPerfil, registro, mostrar_perfiles, login_request
+from AppUsuarios.views import agregarAvatar, chatear, editarPerfil, registro, mostrar_perfiles, login_request, agregarPerfil, verPerfil
 from django.contrib.auth.views import LogoutView
 
 
@@ -12,5 +12,7 @@ urlpatterns = [
     path('logout', LogoutView.as_view(), name='logout'),
     path('chat/<id>', chatear, name='chat'),
     path('agregarAvatar', agregarAvatar, name='agregarAvatar'),
+    path('agregar_perfil', agregarPerfil, name='agregar_perfil'),
+    path('ver_perfil_individual/<id>', verPerfil, name='verPerfil'),
     
 ]

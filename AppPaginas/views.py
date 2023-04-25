@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from AppPaginas.forms import PaginaForm
-from AppUsuarios.views import obtenerAvatar
+from AppUsuarios.views import obtenerAvatar, obtenerFooter
 from AppPaginas.models import *
 
 def agregarDestino(request):
@@ -16,7 +16,7 @@ def agregarDestino(request):
             
             pagina.save()
             
-            return render(request, 'pagina_individual.html', {"mensaje": "Pagina creada correctamente", 'avatar':obtenerAvatar(request)})
+            return render(request, 'pagina_individual.html', {"mensaje": "Pagina creada correctamente", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
         
     else: 
 
@@ -28,13 +28,13 @@ def mostrarPaginas(request):
     paginas = Pagina.objects.all()
 
     if paginas:
-        return render(request, "mostrar_paginas.html", {"paginas":paginas, 'avatar':obtenerAvatar(request)})
+        return render(request, "mostrar_paginas.html", {"paginas":paginas, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
     else:
         mensaje="No hay paginas para mostrar aun"
-        return render(request, "mostrar_paginas.html", {'mensaje':mensaje, 'avatar':obtenerAvatar(request), 'paginas':{}})
+        return render(request, "mostrar_paginas.html", {'mensaje':mensaje, 'avatar':obtenerAvatar(request), 'paginas':{}, 'footer':obtenerFooter(request)})
 
 def verPagina(request, id):
     pagina =Pagina.objects.get(id=id)
 
-    return render(request, 'pagina_individual.html', {'pagina':pagina, 'avatar':obtenerAvatar(request)})
+    return render(request, 'pagina_individual.html', {'pagina':pagina, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
