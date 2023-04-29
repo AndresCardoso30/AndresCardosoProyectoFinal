@@ -6,10 +6,16 @@
 <body>
     <p>{{ mensaje }}</p>
     <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Perfil de {{user.username}}</h1>
+
+    {% if user.perfil %}
     
     <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">{{user.perfil.nombre}} {{user.perfil.apellido}}</h1>
     <h2 style="color: grey; font-size: medium; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{user.perfil.biografia}}</h2>
     <p><img src="{{user.perfil.imagen.url}}" style="width: 1000px; height: 500px;" ></p>
+    {% else %}
+    <h1 style="color: grey; font-size: medium; font-family: Verdana, Geneva, Tahoma, sans-serif;">Usuario no cuenta aun con un perfil.</h1>
+    {% endif %}
+
     {% if request.user == user%}
     <p><a href="{% url 'editar_mi_perfil' %}" style="color: rgba(255, 255, 255, 0.8); margin-left: 90%;">Editar mi Perfil</a></p>
     {% endif %}

@@ -5,7 +5,7 @@
 {% block content %} 
 <body>
     <header>
-        <img src="media\varios\Descubramos.png" style="width: 1855px; height: 200px;">
+        <img src="{{ banner }}" style="width: 1855px; height: 200px;">
     </header>
 
 <h2 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:white; text-align: center;">{{mensaje}}</h2>
@@ -16,7 +16,7 @@
 </p>
 <p>
     {% if user.is_authenticated %}
-    <p style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white; text-align: center; font-size:medium;">Ya estas contribuyendo, ¡Gracias {{request.user.username}}</p>
+    <p style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white; text-align: center; font-size:medium;">Ya estas contribuyendo, ¡Gracias {{request.user.username}}!</p>
     {% else %}
     <a href="{% url 'registro' %}" style="color: rgba(255, 255, 255, 0.8); margin-left: 90%;">Registrarse</a>    
     {% endif %}

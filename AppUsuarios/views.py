@@ -14,6 +14,10 @@ def obtenerFooter(request):
     
     return "/media/varios/abajo.png"
 
+def obtenerBanner(request):
+    
+    return "/media/varios/Descubramos.png"
+
 def registro(request):
 
     if request.method == "POST":
@@ -27,7 +31,7 @@ def registro(request):
             #password2 = form.cleaned_data['password2']
             #email = form.cleaned_data['email']
             form.save()
-            return render(request, 'inicio.html', {"mensaje": "Usuario creado correctamente", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+            return render(request, 'inicio.html', {"mensaje": "Usuario creado correctamente", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'banner':obtenerBanner(request)})
         
     else: 
 
@@ -50,7 +54,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
 
-                return render(request, 'inicio.html', {"mensaje":f"Bienvenido {usuario}", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+                return render(request, 'inicio.html', {"mensaje":f"Bienvenido {usuario}", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'banner':obtenerBanner(request)})
             
             else:
 
@@ -85,7 +89,7 @@ def editarPerfil(request):
             usuario.save()
             mensaje = "Usuario actualizado de forma correcta."
 
-            return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'user':usuario, 'perfil':perfil})
+            return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'user':usuario, 'perfil':perfil, 'banner':obtenerBanner(request)})
     
     else:
 
@@ -139,13 +143,13 @@ def chatear(request, id):
             
             
 
-            return render(request, "chat.html", {"miFormulario":miFormulario, "chats":resultado, "mensaje":mensaje, 'emisor':emisor, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+            return render(request, "chat.html", {"miFormulario":miFormulario, "chats":resultado, "mensaje":mensaje, 'emisor':emisor, 'receptor':receptor, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
         
     mensaje2= "Algo anda mal..."
 
     miFormulario = MensajeForm(initial={'emisor':emisor, 'receptor':receptor, 'clave1':clave1, 'clave2':clave2})
 
-    return render(request, "chat.html", {"miFormulario":miFormulario, "mensaje":mensaje, "mensaje2":mensaje2, "chats":resultado, 'emisor':emisor, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    return render(request, "chat.html", {"miFormulario":miFormulario, "mensaje":mensaje, "mensaje2":mensaje2, "chats":resultado, 'emisor':emisor, 'receptor':receptor, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 def obtenerAvatar(request):
     avatares=Avatar.objects.filter(user=request.user.id)
@@ -173,7 +177,7 @@ def agregarAvatar(request):
             avatar.save()
             mensaje = 'Avatar agregado correctamente'
 
-            return render(request, 'inicio.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje, 'footer':obtenerFooter(request)})
+            return render(request, 'inicio.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje, 'footer':obtenerFooter(request), 'banner':obtenerBanner(request)})
 
         else: 
             return render(request, 'agregarAvatar.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
@@ -221,37 +225,7 @@ def verMiPerfil(request):
     perfil = Perfil.objects.all()
     return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'user':u, 'perfil':perfil})
 
-@login_required
-def eeditar_mi_perfil(request):
 
-    usuario = request.user
-    perfil = Perfil.objects.all()
-
-    if request.method == 'POST':
-        form = PerfilForm(request.POST)
-
-        if form.is_valid():
-            u = User.objects.get(username=request.user)
-
-           
-            imagen=form.cleaned_data['imagen']
-            if imagen:
-                perfil_u = Perfil (user=u, nombre=form.cleaned_data['nombre'], apellido=form.cleaned_data['apellido'], biografia=form.cleaned_data['biografia'], imagen=form.cleaned_data['imagen'])
-            else:
-                perfil_u = Perfil (user=u, nombre=form.cleaned_data['nombre'], apellido=form.cleaned_data['apellido'], biografia=form.cleaned_data['biografia'])
-            perfil_u.save()
-            mensaje = 'Perfil actualizado correctamente'
-
-            return render(request, 'ver_perfil_individual.html', {'avatar':obtenerAvatar(request), 'mensaje':mensaje, 'footer':obtenerFooter(request), 'perfil':perfil_u})
-
-        else: 
-            return render(request, 'editar_mi_perfil.html', {'form':form, 'mensaje': "Error en el formulario", 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
-    
-    else:
-
-        form = PerfilForm(initial={'nombre':usuario.perfil.nombre, 'apellido':usuario.perfil.apellido, 'biografia':usuario.perfil.biografia, 'imagen':usuario.perfil.imagen})
-    
-    return render(request, 'editar_mi_perfil.html', {"form":form, "usuario":usuario, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 def editar_mi_perfil(request):
 
@@ -284,3 +258,4 @@ def editar_mi_perfil(request):
         form = PerfilForm(initial={'nombre':perfil.nombre, 'apellido':perfil.apellido, 'biografia':perfil.biografia})
     
     return render(request, 'editar_mi_perfil.html', {"form":form, "usuario":usuario, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+

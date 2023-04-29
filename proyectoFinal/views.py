@@ -4,7 +4,7 @@ from AppUsuarios.views import obtenerAvatar
 
 def inicio(request):
 
-    return render(request, "inicio.html", {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    return render(request, "inicio.html", {'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'banner':obtenerBanner(request)})
 
 
 def acerca_de_mi(request):
@@ -14,4 +14,8 @@ def acerca_de_mi(request):
 def obtenerFooter(request):
     
     return "/media/varios/abajo.png"
+
+def obtenerBanner(request):
+    
+    return "/media/varios/Descubramos.png"
 
