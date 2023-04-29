@@ -70,7 +70,7 @@ def login_request(request):
 
 
 @login_required
-def editarPerfil(request):
+def editar_usuario(request):
 
     usuario = request.user
     perfil = Perfil.objects.all()
@@ -93,9 +93,9 @@ def editarPerfil(request):
     
     else:
 
-        miFormulario = UserEditForm(initial={'email':usuario.email})
+        miFormulario = UserEditForm(initial={'email':usuario.email, 'username':usuario.username})
     
-    return render(request, 'editar_perfil.html', {"miFormulario":miFormulario, "usuario":usuario, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    return render(request, 'editar_usuario.html', {"miFormulario":miFormulario, "usuario":usuario, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
 
 @login_required

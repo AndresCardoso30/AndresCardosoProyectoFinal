@@ -2,7 +2,10 @@ from django.shortcuts import render
 from AppPaginas.forms import PaginaForm
 from AppUsuarios.views import obtenerAvatar, obtenerFooter
 from AppPaginas.models import *
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def agregarDestino(request):
     if request.method == "POST":
 
@@ -38,3 +41,16 @@ def verPagina(request, id):
 
     return render(request, 'pagina_individual.html', {'pagina':pagina, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
 
+@login_required
+def eliminarPagina(request, id):
+    pagina =Pagina.objects.get(id=id)
+    pagina.delete()
+
+    paginas = Pagina.objects.all()
+
+    if paginas:
+        return render(request, "mostrar_paginas.html", {"paginas":paginas, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request)})
+    else:
+        mensaje="No hay paginas para mostrar aun"
+        return render(request, "mostrar_paginas.html", {'mensaje':mensaje, 'avatar':obtenerAvatar(request), 'paginas':{}, 'footer':obtenerFooter(request)})
+    

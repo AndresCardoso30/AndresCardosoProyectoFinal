@@ -17,7 +17,11 @@
     {% endif %}
 
     {% if request.user == user%}
-    <p><a href="{% url 'editar_mi_perfil' %}" style="color: rgba(255, 255, 255, 0.8); margin-left: 90%;">Editar mi Perfil</a></p>
+        {% if request.user.perfil %}
+        <p><a href="{% url 'editar_mi_perfil' %}" style="color: rgba(255, 255, 255, 0.8); margin-left: 90%;">Editar mi Perfil</a></p>
+        {% else %}
+        <p></p><a href="{% url 'agregar_perfil' %}" style="color: rgba(255, 255, 255, 0.8);">Agregar Perfil</a></p>
+        {% endif %}
     {% endif %}
     
 

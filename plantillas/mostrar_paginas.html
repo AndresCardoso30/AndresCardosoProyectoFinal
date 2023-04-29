@@ -6,7 +6,9 @@
 <body>
     <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">Destinos</h1>
     <h3 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: left; font-size: medium;">{{mensaje}}</h3>
+    {% if user.is_authenticated %}
     <a class="btn btn danger" href="{% url 'agregarDestino' %}" style="color: rgba(255, 255, 255, 0.8); margin-left: 80%; font-size: x-large;">Agregar Destino</a>
+    {% endif %}
     <ul>
 
         {% if paginas %}
@@ -19,6 +21,11 @@
                     <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:grey; font-size: medium; list-style:none;"><img src="{{pagina.imagen.url}}" style="width: 200px; height: 100px;" >{{pagina.subtitulo}}</h3> 
                     <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:grey; font-size: small; list-style:none;">{{pagina.fecha.day}}/{{pagina.fecha.month}}/{{pagina.fecha.year}}</h3>  
                     <a class="btn btn danger" href="{% url 'verPagina' pagina.id %}" style="color: rgba(255, 255, 255, 0.8);">Leer mas</a>
+                    {% if user.is_staff %}
+                    <a class="btn btn danger" href="{% url 'eliminarPagina' pagina.id %}" style="color: rgba(255, 255, 255, 0.8);">Eliminar pagina</a>
+                    {% endif %}
+                    
+                    
                     
                 
 

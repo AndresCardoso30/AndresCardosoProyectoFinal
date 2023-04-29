@@ -11,7 +11,7 @@
         {% for userr in users %}
 
             {% if userr.id != user.id %}
-                <li style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:whitesmoke; font-size: large; list-style:square;">
+                <li style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:whitesmoke; font-size: large; list-style:none; border-style:groove; border-color: black; border-radius: 10px;">
                     
                     {{userr.username}}    
                     <a class="btn btn danger" href="{% url 'verPerfil' userr.id %}" style="color: rgba(255, 255, 255, 0.8);">Ver perfil</a> 

@@ -6,8 +6,15 @@
 <body>
     <h1 style=" font-family: Verdana, Geneva, Tahoma, sans-serif; color:wheat; text-align: center;">{{pagina.titulo}}</h1>
     <h2 style="color: grey; font-size: medium; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pagina.subtitulo}}</h2>
+    <h2 style="color: wheat; font-size: medium; font-family: Verdana, Geneva, Tahoma, sans-serif;">Blog realizado por: {{pagina.autor}}</h2>
     <h3 style="color: white; font-size: small; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pagina.cuerpo}}</h3>
     <img src="{{pagina.imagen.url}}" style="width: 1000px; height: 500px;" >
+
+    {% if request.user == pagina.autor%}
+    <p>
+    <a class="btn btn danger" href="{% url 'eliminarPagina' pagina.id %}" style="color: rgba(255, 255, 255, 0.8);">Eliminar mi pagina</a>
+    </p>
+    {% endif %}
 
     
 

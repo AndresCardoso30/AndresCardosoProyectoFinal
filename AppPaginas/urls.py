@@ -6,5 +6,7 @@ urlpatterns = [
     path('verPagina/<id>', verPagina, name='verPagina'),
     path('agregarDestino', agregarDestino, name='agregarDestino'),
     path('mostrarPaginas', mostrarPaginas, name='mostrarPaginas'),
+    path('eliminarPagina/<id>', eliminarPagina, name='eliminarPagina'),
+    
     
 ]

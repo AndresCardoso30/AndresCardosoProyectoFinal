@@ -19,3 +19,5 @@ def obtenerBanner(request):
     
     return "/media/varios/Descubramos.png"
 
+
+
