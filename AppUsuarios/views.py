@@ -75,18 +75,16 @@ def editar_usuario(request):
     usuario = request.user
     perfil = Perfil.objects.all()
 
+   
     if request.method == 'POST':
         miFormulario = UserEditForm(request.POST)
 
         if miFormulario.is_valid():
-
             informacion = miFormulario.cleaned_data
-            
-            usuario.username = informacion['username']
+
             usuario.email = informacion['email']
-            usuario.password1 = informacion['password1']
-            usuario.password2 = informacion['password2']
-            usuario.save()
+            usuario.set_password(informacion['password1'])
+            usuario.save(update_fields=['email', 'password'])
             mensaje = "Usuario actualizado de forma correcta."
 
             return render(request, 'inicio.html', {'mensaje': mensaje, 'avatar':obtenerAvatar(request), 'footer':obtenerFooter(request), 'user':usuario, 'perfil':perfil, 'banner':obtenerBanner(request)})
